@@ -10,33 +10,120 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAlunoRouteImport } from './routes/_authenticated/aluno'
+import { Route as AuthenticatedMateriaisRouteImport } from './routes/_authenticated/materiais'
+import { Route as AuthenticatedProfessorRouteImport } from './routes/_authenticated/professor'
+import { Route as AuthenticatedAtividadeActivityIdRouteImport } from './routes/_authenticated/atividade.$activityId'
+import { Route as AuthenticatedTurmaClassIdRouteImport } from './routes/_authenticated/turma.$classId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAlunoRoute = AuthenticatedAlunoRouteImport.update({
+  id: '/aluno',
+  path: '/aluno',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMateriaisRoute = AuthenticatedMateriaisRouteImport.update({
+  id: '/materiais',
+  path: '/materiais',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfessorRoute = AuthenticatedProfessorRouteImport.update({
+  id: '/professor',
+  path: '/professor',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAtividadeActivityIdRoute =
+  AuthenticatedAtividadeActivityIdRouteImport.update({
+    id: '/atividade/$activityId',
+    path: '/atividade/$activityId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTurmaClassIdRoute =
+  AuthenticatedTurmaClassIdRouteImport.update({
+    id: '/turma/$classId',
+    path: '/turma/$classId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/aluno': typeof AuthenticatedAlunoRoute
+  '/materiais': typeof AuthenticatedMateriaisRoute
+  '/professor': typeof AuthenticatedProfessorRoute
+  '/atividade/$activityId': typeof AuthenticatedAtividadeActivityIdRoute
+  '/turma/$classId': typeof AuthenticatedTurmaClassIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/aluno': typeof AuthenticatedAlunoRoute
+  '/materiais': typeof AuthenticatedMateriaisRoute
+  '/professor': typeof AuthenticatedProfessorRoute
+  '/atividade/$activityId': typeof AuthenticatedAtividadeActivityIdRoute
+  '/turma/$classId': typeof AuthenticatedTurmaClassIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/aluno': typeof AuthenticatedAlunoRoute
+  '/_authenticated/materiais': typeof AuthenticatedMateriaisRoute
+  '/_authenticated/professor': typeof AuthenticatedProfessorRoute
+  '/_authenticated/atividade/$activityId': typeof AuthenticatedAtividadeActivityIdRoute
+  '/_authenticated/turma/$classId': typeof AuthenticatedTurmaClassIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/aluno'
+    | '/materiais'
+    | '/professor'
+    | '/atividade/$activityId'
+    | '/turma/$classId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/aluno'
+    | '/materiais'
+    | '/professor'
+    | '/atividade/$activityId'
+    | '/turma/$classId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/aluno'
+    | '/_authenticated/materiais'
+    | '/_authenticated/professor'
+    | '/_authenticated/atividade/$activityId'
+    | '/_authenticated/turma/$classId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +135,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/aluno': {
+      id: '/_authenticated/aluno'
+      path: '/aluno'
+      fullPath: '/aluno'
+      preLoaderRoute: typeof AuthenticatedAlunoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/materiais': {
+      id: '/_authenticated/materiais'
+      path: '/materiais'
+      fullPath: '/materiais'
+      preLoaderRoute: typeof AuthenticatedMateriaisRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/professor': {
+      id: '/_authenticated/professor'
+      path: '/professor'
+      fullPath: '/professor'
+      preLoaderRoute: typeof AuthenticatedProfessorRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/atividade/$activityId': {
+      id: '/_authenticated/atividade/$activityId'
+      path: '/atividade/$activityId'
+      fullPath: '/atividade/$activityId'
+      preLoaderRoute: typeof AuthenticatedAtividadeActivityIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/turma/$classId': {
+      id: '/_authenticated/turma/$classId'
+      path: '/turma/$classId'
+      fullPath: '/turma/$classId'
+      preLoaderRoute: typeof AuthenticatedTurmaClassIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAlunoRoute: typeof AuthenticatedAlunoRoute
+  AuthenticatedMateriaisRoute: typeof AuthenticatedMateriaisRoute
+  AuthenticatedProfessorRoute: typeof AuthenticatedProfessorRoute
+  AuthenticatedAtividadeActivityIdRoute: typeof AuthenticatedAtividadeActivityIdRoute
+  AuthenticatedTurmaClassIdRoute: typeof AuthenticatedTurmaClassIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAlunoRoute: AuthenticatedAlunoRoute,
+  AuthenticatedMateriaisRoute: AuthenticatedMateriaisRoute,
+  AuthenticatedProfessorRoute: AuthenticatedProfessorRoute,
+  AuthenticatedAtividadeActivityIdRoute: AuthenticatedAtividadeActivityIdRoute,
+  AuthenticatedTurmaClassIdRoute: AuthenticatedTurmaClassIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
