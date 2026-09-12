@@ -14,16 +14,301 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activities: {
+        Row: {
+          class_id: string
+          created_at: string
+          description: string
+          id: string
+          is_open: boolean
+          prompt_limit: number
+          teacher_id: string
+          title: string
+        }
+        Insert: {
+          class_id: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_open?: boolean
+          prompt_limit?: number
+          teacher_id: string
+          title: string
+        }
+        Update: {
+          class_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_open?: boolean
+          prompt_limit?: number
+          teacher_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activities_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_materials: {
+        Row: {
+          activity_id: string
+          id: string
+          material_id: string
+        }
+        Insert: {
+          activity_id: string
+          id?: string
+          material_id: string
+        }
+        Update: {
+          activity_id?: string
+          id?: string
+          material_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_materials_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_materials_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "materials"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_usage: {
+        Row: {
+          activity_id: string
+          id: string
+          student_id: string
+          updated_at: string
+          used_count: number
+        }
+        Insert: {
+          activity_id: string
+          id?: string
+          student_id: string
+          updated_at?: string
+          used_count?: number
+        }
+        Update: {
+          activity_id?: string
+          id?: string
+          student_id?: string
+          updated_at?: string
+          used_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_usage_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_messages: {
+        Row: {
+          activity_id: string
+          content: string
+          created_at: string
+          id: string
+          role: string
+          student_id: string
+        }
+        Insert: {
+          activity_id: string
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          student_id: string
+        }
+        Update: {
+          activity_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      class_members: {
+        Row: {
+          class_id: string
+          id: string
+          joined_at: string
+          student_id: string
+        }
+        Insert: {
+          class_id: string
+          id?: string
+          joined_at?: string
+          student_id: string
+        }
+        Update: {
+          class_id?: string
+          id?: string
+          joined_at?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_members_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      classes: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          name: string
+          subject: string
+          teacher_id: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          name: string
+          subject?: string
+          teacher_id: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          name?: string
+          subject?: string
+          teacher_id?: string
+        }
+        Relationships: []
+      }
+      materials: {
+        Row: {
+          content_text: string
+          created_at: string
+          file_path: string | null
+          id: string
+          is_active: boolean
+          kind: string
+          page_count: number
+          teacher_id: string
+          title: string
+        }
+        Insert: {
+          content_text?: string
+          created_at?: string
+          file_path?: string | null
+          id?: string
+          is_active?: boolean
+          kind?: string
+          page_count?: number
+          teacher_id: string
+          title: string
+        }
+        Update: {
+          content_text?: string
+          created_at?: string
+          file_path?: string | null
+          id?: string
+          is_active?: boolean
+          kind?: string
+          page_count?: number
+          teacher_id?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_class_member: {
+        Args: { _class_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_class_teacher: {
+        Args: { _class_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "professor" | "aluno"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +435,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["professor", "aluno"],
+    },
   },
 } as const
