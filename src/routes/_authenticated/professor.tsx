@@ -75,10 +75,12 @@ function TeacherHome() {
       const tally: Record<string, { students: number; activities: number }> = {};
       for (const row of rows) tally[row.id] = { students: 0, activities: 0 };
       for (const m of members.data ?? []) {
-        if (tally[m.class_id]) tally[m.class_id].students += 1;
+        const entry = tally[m.class_id];
+        if (entry) entry.students += 1;
       }
       for (const a of activities.data ?? []) {
-        if (tally[a.class_id]) tally[a.class_id].activities += 1;
+        const entry = tally[a.class_id];
+        if (entry) entry.activities += 1;
       }
 
       if (cancelled) return;
